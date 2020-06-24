@@ -6,27 +6,32 @@ import TodoList from "../todo-list";
 import Footer from "../footer";
 
 export default class App extends Component {
+  id = 100;
   state = {
     todos: [
-      {
-        description: "Completed task",
-        created: "created 17 seconds ago",
-        completed: false,
-        id: 0,
-      },
-      {
-        description: "Editing task",
-        created: "created 5 minutes ago",
-        completed: false,
-        id: 1,
-      },
-      {
-        description: "Active task",
-        created: "created 5 minutes ago",
-        completed: false,
-        id: 2,
-      },
+      this.createNewTask("Completed task"),
+      this.createNewTask("Editing task"),
+      this.createNewTask("Active task")
     ],
+  };
+
+  createNewTask(text){
+    return {
+      description: text,
+      created: "created 5 minutes ago",
+      completed: false,
+      id: this.id++,
+    };
+  };
+
+  addNewTask = (text) => {
+    
+    this.setState(({ todos }) => {
+      const newArr = [...todos, this.createNewTask(text)];
+      return {
+        todos: newArr
+      } 
+    });
   };
 
   completeTask = (id) => {
@@ -48,30 +53,27 @@ export default class App extends Component {
   deleteTask = (id) => {
     this.setState(({ todos }) => {
       const idx = todos.findIndex((el) => el.id === id);
-      const newTodos = [
-        ...todos.slice(0, idx),
-        ...todos.slice(idx + 1),
-      ];
+      const newTodos = [...todos.slice(0, idx), ...todos.slice(idx + 1)];
 
       return {
         todos: newTodos,
       };
     });
-  }
+  };
 
   render() {
     const { todos } = this.state;
     return (
-      <section className ="app">
-        <header className ="header">
+      <section className="app">
+        <header className="header">
           <h1>todos</h1>
-          <NewTodo />
+          <NewTodo addNewTask={this.addNewTask} />
         </header>
-        <section className ="main">
-          <TodoList 
-            todos = {todos}
-            completeTask = {this.completeTask}
-            deleteTask = {this.deleteTask} 
+        <section className="main">
+          <TodoList
+            todos={todos}
+            completeTask={this.completeTask}
+            deleteTask={this.deleteTask}
           />
         </section>
         <Footer />
