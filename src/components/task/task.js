@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import "./task.css";
 
 export default class Task extends Component {
+
   state = {
-    checked: this.props.task.completed,
+    checked: this.props.task.completed? this.props.task.completed : false
   };
 
   onClickDelete = (event) => {
@@ -17,22 +18,21 @@ export default class Task extends Component {
       deleteTask(id);
     }
   };
+
   onClickComplete = (event) => {
     event.stopPropagation();
-    const {
-      completeTask,
-      task: { id },
-    } = this.props;
+
+    const { completeTask, task: { id }} = this.props;
+    
     completeTask(id);
+    
+    this.setState({
+      checked: !this.state.checked
+    })
+    
   };
 
-  toggleCheckBox = () => {
-    console.log("dddddddddd");
-    const { completed } = this.props;
-    this.setState({
-      checked: completed,
-    });
-  };
+  
 
   render() {
     const { task } = this.props;
@@ -41,9 +41,8 @@ export default class Task extends Component {
         <input
           className="toggle"
           type="checkbox"
-          onChange={this.toggleCheckBox}
+          onChange={this.onClickComplete}
           checked={this.state.checked}
-          onClick={this.onClickComplete}
         />
         <label>
           <span className="description" onClick={this.onClickComplete}>

@@ -12,26 +12,25 @@ export default class App extends Component {
     todos: [
       this.createNewTask("Completed task"),
       this.createNewTask("Editing task"),
-      this.createNewTask("Active task")
+      this.createNewTask("Active task"),
     ],
   };
 
-  createNewTask(text){
+  createNewTask(text) {
     return {
       description: text,
       created: "created 5 minutes ago",
       completed: false,
       id: this.id++,
     };
-  };
+  }
 
   addNewTask = (text) => {
-    
     this.setState(({ todos }) => {
       const newArr = [...todos, this.createNewTask(text)];
       return {
-        todos: newArr
-      } 
+        todos: newArr,
+      };
     });
   };
 
@@ -64,22 +63,22 @@ export default class App extends Component {
 
   filterTasks = (state) => {
     this.setState({
-      filter:state
+      filter: state,
     });
-  }
+  };
 
   countActiveTasks = () => {
-    const {todos} = this.state;
-    return todos.filter(todo =>!todo.completed).length;
-  }
+    const { todos } = this.state;
+    return todos.filter((todo) => !todo.completed).length;
+  };
 
   clearCompletedTasks = () => {
-    const {todos} = this.state;    
-    const activeTasks = todos.filter(todo =>!todo.completed);
+    const { todos } = this.state;
+    const activeTasks = todos.filter((todo) => !todo.completed);
     this.setState({
-      todos:activeTasks
+      todos: activeTasks,
     });
-  }
+  };
 
   render() {
     const { todos, filter } = this.state;
@@ -94,14 +93,14 @@ export default class App extends Component {
             todos={todos}
             completeTask={this.completeTask}
             deleteTask={this.deleteTask}
-            filter = {filter}
+            filter={filter}
           />
         </section>
-        <Footer 
-          filterTasks = {this.filterTasks}
-          countActiveTasks = {this.countActiveTasks()}
-          clearCompletedTasks = {this.clearCompletedTasks}
-          />
+        <Footer
+          filterTasks={this.filterTasks}
+          countActiveTasks={this.countActiveTasks()}
+          clearCompletedTasks={this.clearCompletedTasks}
+        />
       </section>
     );
   }

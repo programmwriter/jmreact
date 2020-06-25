@@ -10,7 +10,6 @@ export default class NewTodo extends Component {
     this.setState({
       label: e.target.value,
     });
-    console.log(e.target.value);
   };
 
   onSubmit = (e) => {
