@@ -8,6 +8,7 @@ import Footer from "../footer";
 export default class App extends Component {
   id = 100;
   state = {
+    filter: "all",
     todos: [
       this.createNewTask("Completed task"),
       this.createNewTask("Editing task"),
@@ -61,8 +62,27 @@ export default class App extends Component {
     });
   };
 
+  filterTasks = (state) => {
+    this.setState({
+      filter:state
+    });
+  }
+
+  countActiveTasks = () => {
+    const {todos} = this.state;
+    return todos.filter(todo =>!todo.completed).length;
+  }
+
+  clearCompletedTasks = () => {
+    const {todos} = this.state;    
+    const activeTasks = todos.filter(todo =>!todo.completed);
+    this.setState({
+      todos:activeTasks
+    });
+  }
+
   render() {
-    const { todos } = this.state;
+    const { todos, filter } = this.state;
     return (
       <section className="app">
         <header className="header">
@@ -74,9 +94,14 @@ export default class App extends Component {
             todos={todos}
             completeTask={this.completeTask}
             deleteTask={this.deleteTask}
+            filter = {filter}
           />
         </section>
-        <Footer />
+        <Footer 
+          filterTasks = {this.filterTasks}
+          countActiveTasks = {this.countActiveTasks()}
+          clearCompletedTasks = {this.clearCompletedTasks}
+          />
       </section>
     );
   }

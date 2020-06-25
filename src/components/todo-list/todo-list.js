@@ -5,15 +5,28 @@ import Task from "../task";
 
 export default class TodoList extends Component { 
 
-  
+    
   render(){
-    const {todos, deleteTask, completeTask} = this.props;
-    const tasks = todos.map(task => {
-      const { completed, ...taskData} = task;
+
+    const {todos, deleteTask, completeTask, filter} = this.props;
+
+    const filteredTasks = todos.filter(todo => {
+      if(filter === 'Completed'){
+        return todo.completed === true;
+      }else if(filter === 'Active'){
+        return todo.completed !== true;
+      }else{
+        return true;
+      }
+    });
+
+    const tasks = filteredTasks.map(task => {
+      const { completed} = task;
+
         return (
-          <li key = {taskData.id} className = {completed ? "completed" : null}>
+          <li key = {task.id} className = {completed ? "completed" : null}>
             <Task 
-              task = { taskData } 
+              task = { task } 
               deleteTask = {deleteTask}
               completeTask = {completeTask}
             />
