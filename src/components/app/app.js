@@ -19,7 +19,7 @@ export default class App extends Component {
   createNewTask(text) {
     return {
       description: text,
-      created: "created 5 minutes ago",
+      created: new Date(),
       completed: false,
       id: this.id++,
     };

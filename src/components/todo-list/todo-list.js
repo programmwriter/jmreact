@@ -1,10 +1,25 @@
 import React, {Component} from "react";
+import PropTypes from "prop-types";
+
 import "./todo-list.css";
 
 import Task from "../task";
 
 export default class TodoList extends Component { 
 
+  static defaultProps = {
+    todos:[],
+    deleteTask: () => {},
+    completeTask: () => {},
+    filter: 'all'
+  }
+
+  static propTypes = {
+    todos: PropTypes.arrayOf(PropTypes.object) ,
+    deleteTask: PropTypes.func,
+    completeTask: PropTypes.func,
+    filter: PropTypes.string
+  }
     
   render(){
 

@@ -1,7 +1,16 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import "./filters.css";
 
 export default class Filters extends Component {
+
+  static defaultProps = {
+    filterTasks: () => {},
+  }
+
+  static propTypes = {
+    filterTasks: PropTypes.func,
+  }
 
   changeFilterState = (event) => {
     const selectedBtn = event.target;

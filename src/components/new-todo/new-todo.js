@@ -1,7 +1,18 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import "./new-todo.css";
 
 export default class NewTodo extends Component {
+
+  static defaultProps = {
+    addNewTask: () => {}
+  }
+
+  static propTypes = {
+    addNewTask: PropTypes.func
+  }
+
+
   state = {
     label: "",
   };
