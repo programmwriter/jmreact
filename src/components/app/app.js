@@ -6,7 +6,6 @@ import TodoList from '../todo-list';
 import Footer from '../footer';
 
 export default class App extends Component {
-
   state = {
     filter: 'all',
     todos: [
@@ -29,11 +28,7 @@ export default class App extends Component {
     this.setState(({ todos }) => {
       const idx = todos.findIndex((el) => el.id === id);
       const { completed } = todos[idx];
-      const newTodos = [
-        ...todos.slice(0, idx),
-        { ...todos[idx], completed: !completed },
-        ...todos.slice(idx + 1),
-      ];
+      const newTodos = [...todos.slice(0, idx), { ...todos[idx], completed: !completed }, ...todos.slice(idx + 1)];
 
       return {
         todos: newTodos,
@@ -76,7 +71,7 @@ export default class App extends Component {
       description: text,
       created: new Date(),
       completed: false,
-      id: Math.floor(Math.random() *10000000000),
+      id: Math.floor(Math.random() * 10000000000),
     };
   }
 
@@ -89,12 +84,7 @@ export default class App extends Component {
           <NewTodo addNewTask={this.addNewTask} />
         </header>
         <section className="main">
-          <TodoList
-            todos={todos}
-            completeTask={this.completeTask}
-            deleteTask={this.deleteTask}
-            filter={filter}
-          />
+          <TodoList todos={todos} completeTask={this.completeTask} deleteTask={this.deleteTask} filter={filter} />
         </section>
         <Footer
           filterTasks={this.filterTasks}

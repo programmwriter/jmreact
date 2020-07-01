@@ -5,11 +5,11 @@ import './new-todo.css';
 export default class NewTodo extends Component {
   static defaultProps = {
     addNewTask: () => {},
-  }
+  };
 
   static propTypes = {
     addNewTask: PropTypes.func,
-  }
+  };
 
   state = {
     label: '',
@@ -35,12 +35,7 @@ export default class NewTodo extends Component {
     const { label } = this.state;
     return (
       <form onSubmit={this.onSubmit}>
-        <input
-          className="new-todo"
-          placeholder="What needs to be done?"          
-          onChange={this.onchangeLabel}
-          value={label}
-        />
+        <input className="new-todo" placeholder="What needs to be done?" onChange={this.onchangeLabel} value={label} />
       </form>
     );
   }
