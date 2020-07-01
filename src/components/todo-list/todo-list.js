@@ -28,18 +28,18 @@ export default class TodoList extends Component {
     const filteredTasks = todos.filter(todo => {
       if(filter === 'Completed'){
         return todo.completed === true;
-      }else if(filter === 'Active'){
+      }if(filter === 'Active'){
         return todo.completed !== true;
-      }else{
-        return true;
       }
+        return true;
+      
     });
 
     const tasks = filteredTasks.map(task => {
       const { completed} = task;
 
         return (
-          <li key = {task.id} className = {completed ? "completed" : null}>
+          <li key = {task.id} className = { completed ? "completed" : null}>
             <Task 
               task = { task } 
               deleteTask = {deleteTask}

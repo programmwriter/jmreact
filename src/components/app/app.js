@@ -6,7 +6,6 @@ import TodoList from '../todo-list';
 import Footer from '../footer';
 
 export default class App extends Component {
-  id = 100;
 
   state = {
     filter: 'all',
@@ -16,15 +15,6 @@ export default class App extends Component {
       this.createNewTask('Active task'),
     ],
   };
-
-  createNewTask(text) {
-    return {
-      description: text,
-      created: new Date(),
-      completed: false,
-      id: this.id++,
-    };
-  }
 
   addNewTask = (text) => {
     this.setState(({ todos }) => {
@@ -80,6 +70,15 @@ export default class App extends Component {
       todos: activeTasks,
     });
   };
+
+  createNewTask(text) {
+    return {
+      description: text,
+      created: new Date(),
+      completed: false,
+      id: Math.floor(Math.random() *10000000000),
+    };
+  }
 
   render() {
     const { todos, filter } = this.state;

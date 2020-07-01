@@ -15,30 +15,31 @@ export default class NewTodo extends Component {
     label: '',
   };
 
-  onchangeLabel = (e) => {
+  onchangeLabel = (event) => {
     this.setState({
-      label: e.target.value,
+      label: event.target.value,
     });
   };
 
-  onSubmit = (e) => {
-    e.preventDefault();
+  onSubmit = (event) => {
+    event.preventDefault();
     const { addNewTask } = this.props;
-    addNewTask(this.state.label);
+    const { label } = this.state;
+    addNewTask(label);
     this.setState({
       label: '',
     });
   };
 
   render() {
+    const { label } = this.state;
     return (
       <form onSubmit={this.onSubmit}>
         <input
           className="new-todo"
-          placeholder="What needs to be done?"
-          autoFocus
+          placeholder="What needs to be done?"          
           onChange={this.onchangeLabel}
-          value={this.state.label}
+          value={label}
         />
       </form>
     );

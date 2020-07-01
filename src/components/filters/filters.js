@@ -28,15 +28,15 @@ export default class Filters extends Component {
     return (
       <ul className="filters">
         <li>
-          <button className="selected" onClick={this.changeFilterState}>
+          <button  type="button" className="selected" onClick={this.changeFilterState}>
             All
           </button>
         </li>
         <li>
-          <button onClick={this.changeFilterState}>Active</button>
+          <button type="button" onClick={this.changeFilterState}>Active</button>
         </li>
         <li>
-          <button onClick={this.changeFilterState}>Completed</button>
+          <button type="button" onClick={this.changeFilterState}>Completed</button>
         </li>
       </ul>
     );
