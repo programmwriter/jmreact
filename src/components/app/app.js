@@ -1,18 +1,19 @@
-import React, { Component } from "react";
-import "./app.css";
+import React, { Component } from 'react';
+import './app.css';
 
-import NewTodo from "../new-todo";
-import TodoList from "../todo-list";
-import Footer from "../footer";
+import NewTodo from '../new-todo';
+import TodoList from '../todo-list';
+import Footer from '../footer';
 
 export default class App extends Component {
   id = 100;
+
   state = {
-    filter: "all",
+    filter: 'all',
     todos: [
-      this.createNewTask("Completed task"),
-      this.createNewTask("Editing task"),
-      this.createNewTask("Active task"),
+      this.createNewTask('Completed task'),
+      this.createNewTask('Editing task'),
+      this.createNewTask('Active task'),
     ],
   };
 

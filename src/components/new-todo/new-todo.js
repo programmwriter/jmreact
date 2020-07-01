@@ -1,20 +1,18 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import "./new-todo.css";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import './new-todo.css';
 
 export default class NewTodo extends Component {
-
   static defaultProps = {
-    addNewTask: () => {}
+    addNewTask: () => {},
   }
 
   static propTypes = {
-    addNewTask: PropTypes.func
+    addNewTask: PropTypes.func,
   }
 
-
   state = {
-    label: "",
+    label: '',
   };
 
   onchangeLabel = (e) => {
@@ -28,7 +26,7 @@ export default class NewTodo extends Component {
     const { addNewTask } = this.props;
     addNewTask(this.state.label);
     this.setState({
-      label: "",
+      label: '',
     });
   };
 

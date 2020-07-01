@@ -1,11 +1,10 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './footer.css';
 
-
 import Filters from '../filters';
-export default class Footer extends Component {
 
+export default class Footer extends Component {
   static defaultProps = {
     countActiveTasks: 0,
     clearCompletedTasks: () => {},
@@ -18,17 +17,17 @@ export default class Footer extends Component {
     filterTasks: PropTypes.func,
   }
 
-  render(){
-    const {countActiveTasks, clearCompletedTasks, filterTasks} = this.props;
+  render() {
+    const { countActiveTasks, clearCompletedTasks, filterTasks } = this.props;
     return (
       <footer className="footer">
         <span className="todo-count">{countActiveTasks} items left</span>
         <Filters filterTasks = {filterTasks}/>
-        <button 
+        <button
           className="clear-completed"
-          onClick = {()=>{clearCompletedTasks()}}
+          onClick = {() => { clearCompletedTasks() }}
           >Clear completed</button>
       </footer>
     )
-  };
-};
+  }
+}

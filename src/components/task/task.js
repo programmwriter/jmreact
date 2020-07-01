@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { formatDistanceToNow } from 'date-fns'
-import "./task.css";
+import { formatDistanceToNow } from 'date-fns';
+import './task.css';
 
 export default class Task extends Component {
   static defaultProps = {
-    task:{},
+    task: {},
     deleteTask: () => {},
     completeTask: () => {},
   }
@@ -13,13 +13,13 @@ export default class Task extends Component {
   static propTypes = {
     task: PropTypes.object,
     deleteTask: PropTypes.func,
-    completeTask: PropTypes.func    
+    completeTask: PropTypes.func,
   }
 
   state = {
-    checked: this.props.task.completed? this.props.task.completed : false,
-    CreatedDate:this.props.task.created,
-    date:''
+    checked: this.props.task.completed ? this.props.task.completed : false,
+    CreatedDate: this.props.task.created,
+    date: '',
   };
 
   onClickDelete = (event) => {
@@ -29,7 +29,7 @@ export default class Task extends Component {
       task: { id },
     } = this.props;
 
-    if (event.target.classList.contains("icon-destroy")) {
+    if (event.target.classList.contains('icon-destroy')) {
       deleteTask(id);
     }
   };
@@ -37,20 +37,19 @@ export default class Task extends Component {
   onClickComplete = (event) => {
     event.stopPropagation();
 
-    const { completeTask, task: { id }} = this.props;
-    
+    const { completeTask, task: { id } } = this.props;
+
     completeTask(id);
-    
+
     this.setState({
-      checked: !this.state.checked
+      checked: !this.state.checked,
     })
-    
   };
 
   componentDidMount() {
     this.timerID = setInterval(
       () => this.tick(),
-      1000
+      1000,
     );
   }
 
@@ -59,11 +58,8 @@ export default class Task extends Component {
   }
 
   tick() {
-    this.setState({
-      date: formatDistanceToNow(this.state.CreatedDate, {includeSeconds: true})
-    });
+    this.setState({ date: formatDistanceToNow(this.state.CreatedDate, { includeSeconds: true }) });
   }
-  
 
   render() {
     const { task } = this.props;

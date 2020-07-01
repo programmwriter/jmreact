@@ -1,9 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import "./filters.css";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import './filters.css';
 
 export default class Filters extends Component {
-
   static defaultProps = {
     filterTasks: () => {},
   }
@@ -14,12 +13,12 @@ export default class Filters extends Component {
 
   changeFilterState = (event) => {
     const selectedBtn = event.target;
-    
+
     const { filterTasks } = this.props;
     filterTasks(selectedBtn.innerText);
 
-    const buttons = document.querySelectorAll(".filters  button");
-    buttons.forEach(btn => {
+    const buttons = document.querySelectorAll('.filters  button');
+    buttons.forEach((btn) => {
       btn.classList.remove('selected')
     })
     selectedBtn.classList.add('selected');
