@@ -47,6 +47,10 @@ export default class App extends Component {
     });
   };
 
+  editTask = (id) => {
+    return id ;
+  }
+
   filterTasks = (state) => {
     this.setState({
       filter: state,
@@ -84,7 +88,7 @@ export default class App extends Component {
           <NewTodo addNewTask={this.addNewTask} />
         </header>
         <section className="main">
-          <TodoList todos={todos} completeTask={this.completeTask} deleteTask={this.deleteTask} filter={filter} />
+          <TodoList todos={todos} completeTask={this.completeTask} deleteTask={this.deleteTask} filter={filter} editTask={this.editTask}/>
         </section>
         <Footer
           filterTasks={this.filterTasks}

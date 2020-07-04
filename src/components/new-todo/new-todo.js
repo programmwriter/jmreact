@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
 import './new-todo.css';
 
 export default class NewTodo extends Component {
@@ -25,7 +26,10 @@ export default class NewTodo extends Component {
     event.preventDefault();
     const { addNewTask } = this.props;
     const { label } = this.state;
-    addNewTask(label);
+    if(label.trim()){
+     addNewTask(label); 
+    }
+    
     this.setState({
       label: '',
     });

@@ -92,7 +92,7 @@ export default class Task extends Component {
           >
             {task.description}
           </span>
-          <span className="created">{`created ${date} ago`}</span>
+          <span className="created">{date?`created ${date} ago` : 'just created'}</span>
         </label>
         <button aria-label="edit" type="button" className="icon icon-edit" />
         <button type="button" className="icon icon-destroy" onClick={this.onClickDelete} aria-label="delete" />

@@ -4,12 +4,14 @@ import PropTypes from 'prop-types';
 import './todo-list.css';
 
 import Task from '../task';
+import EditTodo from '../edit-todo';
 
 export default class TodoList extends Component {
   static defaultProps = {
     todos: [],
     deleteTask: () => {},
     completeTask: () => {},
+    editTask: () => {},
     filter: 'all',
   };
 
@@ -17,11 +19,12 @@ export default class TodoList extends Component {
     todos: PropTypes.arrayOf(PropTypes.object),
     deleteTask: PropTypes.func,
     completeTask: PropTypes.func,
+    editTask: PropTypes.func,
     filter: PropTypes.string,
   };
 
   render() {
-    const { todos, deleteTask, completeTask, filter } = this.props;
+    const { todos, deleteTask, completeTask, editTask, filter } = this.props;
 
     const filteredTasks = todos.filter((todo) => {
       if (filter === 'Completed') {
@@ -39,6 +42,7 @@ export default class TodoList extends Component {
       return (
         <li key={task.id} className={completed ? 'completed' : null}>
           <Task task={task} deleteTask={deleteTask} completeTask={completeTask} />
+          <EditTodo id={task.id} editTask={editTask}/>
         </li>
       );
     });
