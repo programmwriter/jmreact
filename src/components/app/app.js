@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { Component } from 'react';
 import './app.css';
 
@@ -39,7 +40,7 @@ export default class App extends Component {
   deleteTask = (id) => {
     this.setState(({ todos }) => {
       const idx = todos.findIndex((el) => el.id === id);
-      const newTodos = [...todos.slice(0, idx), ...todos.slice(idx + 1)];
+      const newTodos = [...todos.slice(0,idx), ...todos.slice(idx + 1)];
 
       return {
         todos: newTodos,
@@ -47,9 +48,43 @@ export default class App extends Component {
     });
   };
 
-  editTask = (id) => {
-    return id ;
-  }
+  editTask = (id, text = '') => {
+    this.setState(({ todos }) => {
+      const idx = todos.findIndex((el) => el.id === id);
+      // let { description } = todos[idx];
+      const newTodos = [
+        ...todos.slice(0, idx),
+        { ...todos[idx], description: text, editing: false },
+        ...todos.slice(idx + 1),
+      ];
+
+      return {
+        todos: newTodos,
+      };
+    });
+  };
+
+  changeEditingToFalse = () => {
+    this.setState(({ todos }) => {
+      // const newTodos = todos.map((el) => el.editing = false);
+      const newTodos = todos.map((el) => ({ ...el, editing: false }));
+      return {
+        todos: [...newTodos],
+      };
+    });
+  };
+
+  changeTaskToInput = (id) => {
+    this.setState(({ todos }) => {
+      const idx = todos.findIndex((el) => el.id === id);
+      const { editing } = todos[idx];
+      const newTodos = [...todos.slice(0, idx), { ...todos[idx], editing: !editing }, ...todos.slice(idx + 1)];
+
+      return {
+        todos: newTodos,
+      };
+    });
+  };
 
   filterTasks = (state) => {
     this.setState({
@@ -74,6 +109,7 @@ export default class App extends Component {
     return {
       description: text,
       created: new Date(),
+      editing: false,
       completed: false,
       id: Math.floor(Math.random() * 10000000000),
     };
@@ -82,13 +118,22 @@ export default class App extends Component {
   render() {
     const { todos, filter } = this.state;
     return (
-      <section className="app">
+      // eslint-disable-next-line jsx-a11y/click-events-have-key-events
+      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+      <section className="app" onClick={this.changeEditingToFalse}>
         <header className="header">
           <h1>todos</h1>
           <NewTodo addNewTask={this.addNewTask} />
         </header>
         <section className="main">
-          <TodoList todos={todos} completeTask={this.completeTask} deleteTask={this.deleteTask} filter={filter} editTask={this.editTask}/>
+          <TodoList
+            todos={todos}
+            completeTask={this.completeTask}
+            deleteTask={this.deleteTask}
+            filter={filter}
+            changeTaskToInput={this.changeTaskToInput}
+            editTask={this.editTask}
+          />
         </section>
         <Footer
           filterTasks={this.filterTasks}

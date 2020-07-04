@@ -26,10 +26,10 @@ export default class NewTodo extends Component {
     event.preventDefault();
     const { addNewTask } = this.props;
     const { label } = this.state;
-    if(label.trim()){
-     addNewTask(label); 
+    if (label.trim()) {
+      addNewTask(label);
     }
-    
+
     this.setState({
       label: '',
     });

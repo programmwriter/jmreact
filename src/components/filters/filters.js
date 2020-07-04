@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { v4 as uuidv4 } from 'uuid';
 import './filters.css';
 
 export default class Filters extends Component {
@@ -11,38 +12,39 @@ export default class Filters extends Component {
     filterTasks: PropTypes.func,
   };
 
+  state = {
+    currentFilter: 'All',
+  };
+
   changeFilterState = (event) => {
     const selectedBtn = event.target;
 
     const { filterTasks } = this.props;
     filterTasks(selectedBtn.innerText);
 
-    const buttons = document.querySelectorAll('.filters  button');
-    buttons.forEach((btn) => {
-      btn.classList.remove('selected');
-    });
-    selectedBtn.classList.add('selected');
+    this.setState({ currentFilter: selectedBtn.dataset.filter });
   };
 
   render() {
-    return (
-      <ul className="filters">
-        <li>
-          <button type="button" className="selected" onClick={this.changeFilterState}>
-            All
+    const namesOfButtons = ['All', 'Active', 'Completed'];
+    const { currentFilter } = this.state;
+
+    const filterButtons = namesOfButtons.map((el) => {
+      const chahgeClassNameOfButton = () => {
+        if (el === currentFilter) {
+          return 'selected';
+        }
+        return '';
+      };
+      return (
+        <li key={uuidv4()}>
+          <button type="button" data-filter={el} className={chahgeClassNameOfButton()} onClick={this.changeFilterState}>
+            {el}
           </button>
         </li>
-        <li>
-          <button type="button" onClick={this.changeFilterState}>
-            Active
-          </button>
-        </li>
-        <li>
-          <button type="button" onClick={this.changeFilterState}>
-            Completed
-          </button>
-        </li>
-      </ul>
-    );
+      );
+    });
+
+    return <ul className="filters">{filterButtons}</ul>;
   }
 }

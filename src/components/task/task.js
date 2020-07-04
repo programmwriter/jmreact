@@ -8,6 +8,7 @@ export default class Task extends Component {
     task: {},
     deleteTask: () => {},
     completeTask: () => {},
+    changeTaskToInput: () => {},
   };
 
   static propTypes = {
@@ -18,6 +19,7 @@ export default class Task extends Component {
       completed: PropTypes.bool,
     }),
     deleteTask: PropTypes.func,
+    changeTaskToInput: PropTypes.func,
     completeTask: PropTypes.func,
   };
 
@@ -53,6 +55,16 @@ export default class Task extends Component {
     if (event.target.classList.contains('icon-destroy')) {
       deleteTask(id);
     }
+  };
+
+  onClickEdit = (event) => {
+    event.stopPropagation();
+    const {
+      changeTaskToInput,
+      task: { id },
+    } = this.props;
+
+    changeTaskToInput(id);
   };
 
   onClickComplete = (event) => {
@@ -92,10 +104,10 @@ export default class Task extends Component {
           >
             {task.description}
           </span>
-          <span className="created">{date?`created ${date} ago` : 'just created'}</span>
+          <span className="created">{date ? `created ${date} ago` : 'just created'}</span>
         </label>
-        <button aria-label="edit" type="button" className="icon icon-edit" />
-        <button type="button" className="icon icon-destroy" onClick={this.onClickDelete} aria-label="delete" />
+        <button aria-label="edit" type="button" className="icon icon-edit" onClick={this.onClickEdit} />
+        <button aria-label="delete" type="button" className="icon icon-destroy" onClick={this.onClickDelete} />
       </div>
     );
   }

@@ -12,6 +12,7 @@ export default class TodoList extends Component {
     deleteTask: () => {},
     completeTask: () => {},
     editTask: () => {},
+    changeTaskToInput: () => {},
     filter: 'all',
   };
 
@@ -20,11 +21,12 @@ export default class TodoList extends Component {
     deleteTask: PropTypes.func,
     completeTask: PropTypes.func,
     editTask: PropTypes.func,
+    changeTaskToInput: PropTypes.func,
     filter: PropTypes.string,
   };
 
   render() {
-    const { todos, deleteTask, completeTask, editTask, filter } = this.props;
+    const { todos, deleteTask, completeTask, editTask, filter, changeTaskToInput } = this.props;
 
     const filteredTasks = todos.filter((todo) => {
       if (filter === 'Completed') {
@@ -37,12 +39,22 @@ export default class TodoList extends Component {
     });
 
     const tasks = filteredTasks.map((task) => {
-      const { completed } = task;
+      const { completed, editing } = task;
+
+      const changeClassNameOfListItem = () => {
+        if (editing) {
+          return 'editing';
+        }
+        if (completed) {
+          return 'completed';
+        }
+        return null;
+      };
 
       return (
-        <li key={task.id} className={completed ? 'completed' : null}>
-          <Task task={task} deleteTask={deleteTask} completeTask={completeTask} />
-          <EditTodo id={task.id} editTask={editTask}/>
+        <li key={task.id} className={changeClassNameOfListItem()}>
+          <Task task={task} deleteTask={deleteTask} completeTask={completeTask} changeTaskToInput={changeTaskToInput} />
+          <EditTodo id={task.id} editTask={editTask} />
         </li>
       );
     });
