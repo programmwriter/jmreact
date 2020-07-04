@@ -7,6 +7,7 @@ export default class EditTodo extends Component {
   static propTypes = {
     editTask: PropTypes.func.isRequired,
     id: PropTypes.number.isRequired,
+    placeHolder: PropTypes.string.isRequired,
   };
 
   state = {
@@ -35,12 +36,13 @@ export default class EditTodo extends Component {
 
   render() {
     const { label } = this.state;
+    const { placeHolder } = this.props;
     return (
       <form onSubmit={this.onSubmit}>
         <input
           type="text"
           className="edit"
-          placeholder="Editing task"
+          placeholder={placeHolder}
           onChange={this.onchangeLabel}
           onClick={(event) => event.stopPropagation()}
           value={label}

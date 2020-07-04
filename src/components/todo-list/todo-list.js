@@ -54,7 +54,7 @@ export default class TodoList extends Component {
       return (
         <li key={task.id} className={changeClassNameOfListItem()}>
           <Task task={task} deleteTask={deleteTask} completeTask={completeTask} changeTaskToInput={changeTaskToInput} />
-          <EditTodo id={task.id} editTask={editTask} />
+          <EditTodo id={task.id} placeHolder = {task.description} editTask={editTask} />
         </li>
       );
     });
