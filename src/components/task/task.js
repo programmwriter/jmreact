@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { formatDistanceToNow } from 'date-fns';
+import Timer from '../timer';
+
 import './task.css';
 
 export default class Task extends Component {
@@ -104,6 +106,7 @@ export default class Task extends Component {
           >
             {task.description}
           </span>
+          <Timer />
           <span className="created">{date ? `created ${date} ago` : 'just created'}</span>
         </label>
         <button aria-label="edit" type="button" className="icon icon-edit" onClick={this.onClickEdit} />

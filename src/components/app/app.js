@@ -10,9 +10,9 @@ export default class App extends Component {
   state = {
     filter: 'all',
     todos: [
-      this.createNewTask('Completed task'),
-      this.createNewTask('Editing task'),
-      this.createNewTask('Active task'),
+      this.createNewTask('One'),
+      this.createNewTask('Two'),
+      this.createNewTask('Three'),
     ],
   };
 
