@@ -1,117 +1,103 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { formatDistanceToNow } from 'date-fns';
 import Timer from '../timer';
 
 import './task.css';
 
-export default class Task extends Component {
-  static defaultProps = {
-    task: {},
-    deleteTask: () => {},
-    completeTask: () => {},
-    changeTaskToInput: () => {},
-  };
+const Task = (props) => {
+  const [date, setDate] = useState('');
+  const [checked, setCheckedTask] = useState(false);
+  const [createdDate, setCreated] = useState('');
 
-  static propTypes = {
-    task: PropTypes.shape({
-      id: PropTypes.number,
-      description: PropTypes.string,
-      created: PropTypes.instanceOf(Date),
-      completed: PropTypes.bool,
-    }),
-    deleteTask: PropTypes.func,
-    changeTaskToInput: PropTypes.func,
-    completeTask: PropTypes.func,
-  };
+  const { task } = props;
 
-  state = {
-    date: '',
-  };
+  useEffect(() => {
+    const tick = () => {
+      setDate(formatDistanceToNow(createdDate, { includeSeconds: true }));
+    };
 
-  componentDidMount() {
-    const {
-      task: { created, completed },
-    } = this.props;
+    const { created, completed } = task;
+    setCheckedTask(completed);
+    setCreated(created);
 
-    this.setState({
-      checked: completed || false,
-      CreatedDate: created,
-    });
+    const timerID = setInterval(() => tick(), 1000);
 
-    this.timerID = setInterval(() => this.tick(), 1000);
-  }
+    return () => {
+      clearInterval(timerID);
+    };
+  }, [task, setDate, createdDate]);
 
-  componentWillUnmount() {
-    clearInterval(this.timerID);
-  }
-
-  onClickDelete = (event) => {
+  const onClickDelete = (event) => {
     event.stopPropagation();
 
     const {
       deleteTask,
       task: { id },
-    } = this.props;
+    } = props;
 
     if (event.target.classList.contains('icon-destroy')) {
       deleteTask(id);
     }
   };
 
-  onClickEdit = (event) => {
+  const onClickEdit = (event) => {
     event.stopPropagation();
     const {
       changeTaskToInput,
       task: { id },
-    } = this.props;
+    } = props;
 
     changeTaskToInput(id);
   };
 
-  onClickComplete = (event) => {
+  const onClickComplete = (event) => {
     event.stopPropagation();
 
     const {
       completeTask,
       task: { id },
-    } = this.props;
+    } = props;
 
     completeTask(id);
 
-    this.setState((prevState) => ({
-      checked: !prevState.checked,
+    setCheckedTask((prevChecked) => ({
+      checked: !prevChecked,
     }));
   };
+  return (
+    <div className="view">
+      <input className="toggle" type="checkbox" onChange={onClickComplete} checked={checked} />
+      <label>
+        <span role="button" className="description" onClick={onClickComplete} onKeyPress={onClickComplete} tabIndex="0">
+          {task.description}
+        </span>
+        <Timer />
+        <span className="created">{date ? `created ${date} ago` : 'just created'}</span>
+      </label>
+      <button aria-label="edit" type="button" className="icon icon-edit" onClick={onClickEdit} />
+      <button aria-label="delete" type="button" className="icon icon-destroy" onClick={onClickDelete} />
+    </div>
+  );
+};
 
-  tick() {
-    this.setState((prevState) => ({
-      date: formatDistanceToNow(prevState.CreatedDate, { includeSeconds: true }),
-    }));
-  }
+Task.defaultProps = {
+  task: {},
+  deleteTask: () => {},
+  completeTask: () => {},
+  changeTaskToInput: () => {},
+};
 
-  render() {
-    const { task } = this.props;
-    const { checked, date } = this.state;
-    return (
-      <div className="view">
-        <input className="toggle" type="checkbox" onChange={this.onClickComplete} checked={checked} />
-        <label>
-          <span
-            role="button"
-            className="description"
-            onClick={this.onClickComplete}
-            onKeyPress={this.onClickComplete}
-            tabIndex="0"
-          >
-            {task.description}
-          </span>
-          <Timer />
-          <span className="created">{date ? `created ${date} ago` : 'just created'}</span>
-        </label>
-        <button aria-label="edit" type="button" className="icon icon-edit" onClick={this.onClickEdit} />
-        <button aria-label="delete" type="button" className="icon icon-destroy" onClick={this.onClickDelete} />
-      </div>
-    );
-  }
-}
+Task.propTypes = {
+  task: PropTypes.shape({
+    id: PropTypes.number,
+    description: PropTypes.string,
+    created: PropTypes.instanceOf(Date),
+    completed: PropTypes.bool,
+  }),
+  deleteTask: PropTypes.func,
+  changeTaskToInput: PropTypes.func,
+  completeTask: PropTypes.func,
+};
+
+export default Task;
