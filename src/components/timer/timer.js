@@ -1,45 +1,44 @@
-import React, {Component} from 'react';
+import React, {  useState} from 'react';
 import timeSpanFormat from 'time-span-format';
 
 import './timer.css';
 
-export default class Timer extends Component{
-  state = {
-    seconds:0,
-    started: false
-  }
+const Timer = () => {
+  const [seconds, setSeconds] = useState(0);
+  const [started, setStarted] = useState(false);
+  const [timerID, setTimerID] = useState(0);
 
-  onPlayTimer = () => {
-    const {started} = this.state;
-    if(!started){ 
-      this.timerID = setInterval(() => this.tick(), 1000);
-      this.setState({started:true});
+  
+
+  const tick = () => {
+    setSeconds((sec) => sec + 1);
+  };
+
+  const onPlayTimer = () => {
+    if (!started) {
+      setTimerID(setInterval(() => tick(), 1000));
+      setStarted(true);
     }
-  }
+  };
+  
+  const onPausedTimer = () => {
+    clearInterval(timerID);
+    setStarted(false);
+  };
 
-  onPausedTimer = () => {
-    clearInterval(this.timerID);
-    this.setState({started:false});
-  }
+  
+  return (
+    <span className="description description__flex">
+      <div className="description__item">
+        <button aria-label="play" type="button" className="icon icon-play" onClick={onPlayTimer} />
+      </div>
+      <div className="description__item">
+        <button aria-label="pause" type="button" className="icon icon-pause" onClick={onPausedTimer} />
+      </div>
 
-  tick = () => {
-    this.setState((prevState) => ({
-      seconds:prevState.seconds + 1
-    }));
-  }
+      {timeSpanFormat(seconds)}
+    </span>
+  );
+};
+export default Timer;
 
-  render(){
-
-    const {seconds} = this.state;
-
-    return(
-      <span className="description description__flex">
-        <div className="description__item"><button aria-label="play" type="button" className="icon icon-play" onClick={this.onPlayTimer}/></div>
-        <div className="description__item"><button aria-label="pause" type="button" className="icon icon-pause" onClick={this.onPausedTimer}/></div>
-        
-        {timeSpanFormat(seconds)}
-        
-      </span>
-    )
-  }
-}
