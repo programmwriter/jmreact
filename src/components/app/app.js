@@ -1,111 +1,14 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import './app.css';
 
 import NewTodo from '../new-todo';
 import TodoList from '../todo-list';
 import Footer from '../footer';
 
-export default class App extends Component {
-  state = {
-    filter: 'all',
-    todos: [
-      this.createNewTask('One'),
-      this.createNewTask('Two'),
-      this.createNewTask('Three'),
-    ],
-  };
-
-  addNewTask = (text) => {
-    this.setState(({ todos }) => {
-      const newArr = [...todos, this.createNewTask(text)];
-      return {
-        todos: newArr,
-      };
-    });
-  };
-
-  completeTask = (id) => {
-    this.setState(({ todos }) => {
-      const idx = todos.findIndex((el) => el.id === id);
-      const { completed } = todos[idx];
-      const newTodos = [...todos.slice(0, idx), { ...todos[idx], completed: !completed }, ...todos.slice(idx + 1)];
-
-      return {
-        todos: newTodos,
-      };
-    });
-  };
-
-  deleteTask = (id) => {
-    this.setState(({ todos }) => {
-      const idx = todos.findIndex((el) => el.id === id);
-      const newTodos = [...todos.slice(0,idx), ...todos.slice(idx + 1)];
-
-      return {
-        todos: newTodos,
-      };
-    });
-  };
-
-  editTask = (id, text = '') => {
-    this.setState(({ todos }) => {
-      const idx = todos.findIndex((el) => el.id === id);
-      // let { description } = todos[idx];
-      const newTodos = [
-        ...todos.slice(0, idx),
-        { ...todos[idx], description: text, editing: false },
-        ...todos.slice(idx + 1),
-      ];
-
-      return {
-        todos: newTodos,
-      };
-    });
-  };
-
-  changeEditingToFalse = () => {
-    this.setState(({ todos }) => {
-      // const newTodos = todos.map((el) => el.editing = false);
-      const newTodos = todos.map((el) => ({ ...el, editing: false }));
-      return {
-        todos: [...newTodos],
-      };
-    });
-  };
-
-  changeTaskToInput = (id) => {
-    this.setState(({ todos }) => {
-      const idx = todos.findIndex((el) => el.id === id);
-      const { editing } = todos[idx];
-      const newTodos = [...todos.slice(0, idx), { ...todos[idx], editing: !editing }, ...todos.slice(idx + 1)];
-
-      return {
-        todos: newTodos,
-      };
-    });
-  };
-
-  filterTasks = (state) => {
-    this.setState({
-      filter: state,
-    });
-  };
-
-  countActiveTasks = () => {
-    const { todos } = this.state;
-    return todos.filter((todo) => !todo.completed).length;
-  };
-
-  clearCompletedTasks = () => {
-    const { todos } = this.state;
-    const activeTasks = todos.filter((todo) => !todo.completed);
-    this.setState({
-      todos: activeTasks,
-    });
-  };
-
-  createNewTask(text) {
+const App = () => {
+  const [filter, setFilter] = useState('all');
+  const createNewTask = (text) => {
     return {
       description: text,
       created: new Date(),
@@ -113,34 +16,109 @@ export default class App extends Component {
       completed: false,
       id: Math.floor(Math.random() * 10000000000),
     };
-  }
+  };
+  const [todos, setTodos] = useState(() => {
+    return [createNewTask('One'), createNewTask('Two'), createNewTask('Three')];
+  });
 
-  render() {
-    const { todos, filter } = this.state;
-    return (
-      // eslint-disable-next-line jsx-a11y/click-events-have-key-events
-      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-      <section className="app" onClick={this.changeEditingToFalse}>
-        <header className="header">
-          <h1>todos</h1>
-          <NewTodo addNewTask={this.addNewTask} />
-        </header>
-        <section className="main">
-          <TodoList
-            todos={todos}
-            completeTask={this.completeTask}
-            deleteTask={this.deleteTask}
-            filter={filter}
-            changeTaskToInput={this.changeTaskToInput}
-            editTask={this.editTask}
-          />
-        </section>
-        <Footer
-          filterTasks={this.filterTasks}
-          countActiveTasks={this.countActiveTasks()}
-          clearCompletedTasks={this.clearCompletedTasks}
+  const addNewTask = (text) => {
+    setTodos((prevTodos) => {
+      const newArr = [...prevTodos, createNewTask(text)];
+      return newArr;
+    });
+  };
+
+  const completeTask = (id) => {
+    setTodos((prevTodos) => {
+      const idx = prevTodos.findIndex((el) => el.id === id);
+      const { completed } = prevTodos[idx];
+      const newTodos = [
+        ...prevTodos.slice(0, idx),
+        { ...todos[idx], completed: !completed },
+        ...prevTodos.slice(idx + 1),
+      ];
+
+      return newTodos;
+    });
+  };
+
+  const deleteTask = (id) => {
+    setTodos((prevTodos) => {
+      const idx = prevTodos.findIndex((el) => el.id === id);
+      const newTodos = [...prevTodos.slice(0, idx), ...prevTodos.slice(idx + 1)];
+
+      return newTodos;
+    });
+  };
+
+  const editTask = (id, text = '') => {
+    setTodos((prevTodos) => {
+      const idx = prevTodos.findIndex((el) => el.id === id);
+      const newTodos = [
+        ...prevTodos.slice(0, idx),
+        { ...prevTodos[idx], description: text, editing: false },
+        ...prevTodos.slice(idx + 1),
+      ];
+
+      return newTodos;
+    });
+  };
+
+  const changeEditingToFalse = () => {
+    setTodos((prevTodos) => {
+      const newTodos = prevTodos.map((el) => ({ ...el, editing: false }));
+      return [...newTodos];
+    });
+  };
+
+  const changeTaskToInput = (id) => {
+    setTodos((prevTodos) => {
+      const idx = prevTodos.findIndex((el) => el.id === id);
+      const { editing } = prevTodos[idx];
+      const newTodos = [...prevTodos.slice(0, idx), { ...todos[idx], editing: !editing }, ...prevTodos.slice(idx + 1)];
+
+      return newTodos;
+    });
+  };
+
+  const filterTasks = (state) => {
+    setFilter(state);
+  };
+
+  const countActiveTasks = () => {
+    return todos.filter((todo) => !todo.completed).length;
+  };
+
+  const clearCompletedTasks = () => {
+    const activeTasks = todos.filter((todo) => !todo.completed);
+    setTodos(activeTasks);
+  };
+
+  return (
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+    <section className="app" onClick={changeEditingToFalse}>
+      <header className="header">
+        <h1>todos</h1>
+        <NewTodo addNewTask={addNewTask} />
+      </header>
+      <section className="main">
+        <TodoList
+          todos={todos}
+          completeTask={completeTask}
+          deleteTask={deleteTask}
+          filter={filter}
+          changeTaskToInput={changeTaskToInput}
+          editTask={editTask}
         />
       </section>
-    );
-  }
-}
+      <Footer
+        filterTasks={filterTasks}
+        countActiveTasks={countActiveTasks()}
+        clearCompletedTasks={clearCompletedTasks}
+      />
+    </section>
+  );
+};
+
+export default App;

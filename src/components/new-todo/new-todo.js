@@ -1,46 +1,46 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import './new-todo.css';
 
-export default class NewTodo extends Component {
-  static defaultProps = {
-    addNewTask: () => {},
+const NewTodo = (props) => {
+  const [label, setLabel] = useState('');  
+
+  const onchangeLabel = ({target:{value}}) => {
+    setLabel(value);
   };
 
-  static propTypes = {
-    addNewTask: PropTypes.func,
-  };
+  const onSubmit = (event) => {
 
-  state = {
-    label: '',
-  };
-
-  onchangeLabel = (event) => {
-    this.setState({
-      label: event.target.value,
-    });
-  };
-
-  onSubmit = (event) => {
     event.preventDefault();
-    const { addNewTask } = this.props;
-    const { label } = this.state;
+    const { addNewTask } = props;
     if (label.trim()) {
       addNewTask(label);
     }
 
-    this.setState({
-      label: '',
-    });
+    setLabel(label);
   };
 
-  render() {
-    const { label } = this.state;
-    return (
-      <form onSubmit={this.onSubmit}>
-        <input className="new-todo" placeholder="What needs to be done?" onChange={this.onchangeLabel} value={label} />
-      </form>
-    );
-  }
+  
+  return (
+    <form onSubmit={onSubmit}>
+      <input className="new-todo" placeholder="What needs to be done?" onChange={onchangeLabel} value={label} />
+    </form>
+  );
+
 }
+
+export default NewTodo;
+
+NewTodo.defaultProps = {
+  addNewTask: () => {},
+};
+
+NewTodo.propTypes = {
+  addNewTask: PropTypes.func,
+};
+
+
+
+
+

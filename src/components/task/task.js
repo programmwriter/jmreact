@@ -7,26 +7,22 @@ import './task.css';
 
 const Task = (props) => {
   const [date, setDate] = useState('');
-  const [checked, setCheckedTask] = useState(false);
-  const [createdDate, setCreated] = useState('');
+  const [checked, setCheckedTask] = useState(false);  
 
   const { task } = props;
+  const { created, completed } = task;
 
   useEffect(() => {
     const tick = () => {
-      setDate(formatDistanceToNow(createdDate, { includeSeconds: true }));
+      setDate(formatDistanceToNow(created, { includeSeconds: true }));
     };
-
-    const { created, completed } = task;
     setCheckedTask(completed);
-    setCreated(created);
-
     const timerID = setInterval(() => tick(), 1000);
 
     return () => {
       clearInterval(timerID);
     };
-  }, [task, setDate, createdDate]);
+  }, [created, completed]);
 
   const onClickDelete = (event) => {
     event.stopPropagation();
